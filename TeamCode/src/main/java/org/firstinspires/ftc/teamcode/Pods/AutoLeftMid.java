@@ -592,9 +592,6 @@ public class AutoLeftMid extends LinearOpMode {
                 })
                 //
                 .setVelConstraint(fastConstraint)
-//                .setReversed(true)
-//                .splineToConstantHeading(new Vector2d(24+12+2,pickUpCoordinateY1),Math.toRadians(90))
-//                .lineTo(new Vector2d(pickUpCoordinateX1,pickUpCoordinateY1))
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(24+24, pickUpCoordinateY1, Math.toRadians(180)), Math.toRadians(0))
                 .lineTo(new Vector2d(pickUpCoordinateX1,pickUpCoordinateY1))
@@ -1204,8 +1201,10 @@ public class AutoLeftMid extends LinearOpMode {
         while (opModeIsActive())
         {
             if(timer.seconds() - elapsedSeconds >= bufferWaitTime) return;
+
             double leftSensorDist = distanceSensorLeft.getDistance(DistanceUnit.INCH);
             double rightSensorDist = distanceSensorRight.getDistance(DistanceUnit.INCH);
+
             double error = Math.min(leftSensorDist,rightSensorDist) - FrontAlign_target1;
 
             if(error >= 10) return;
@@ -1244,6 +1243,7 @@ public class AutoLeftMid extends LinearOpMode {
         while (opModeIsActive())
         {
             if(timer.seconds() - elapsedSeconds >= bufferWaitTime) return; //
+
             double distanceLeft = backLeftDist.getDistance(DistanceUnit.INCH);
             double distanceRight = backRightDist.getDistance(DistanceUnit.INCH);
 

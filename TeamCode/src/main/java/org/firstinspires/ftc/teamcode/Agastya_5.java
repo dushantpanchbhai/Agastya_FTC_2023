@@ -51,10 +51,10 @@ public class Agastya_5 extends LinearOpMode {
     public static double FrontAlign_factor = 1;
 
     double sliderPickUp = Constants.sliderPickUp;
-    double sliderDrop = Constants.sliderDropIncline;
-    int low = Constants.lowHeightIncline;
-    int middle = Constants.midddleHeightIncline;
-    int high = Constants.highHeightIncline;
+    double sliderDrop = Constants.sliderDrop;
+    int low = Constants.lowHeight;
+    int middle = Constants.middleHeight;
+    int high = Constants.highHeight;
 
     double rotatorPickUP = Constants.rotatorPickUP;
     double rotatorDrop = Constants.rotatorDrop;
@@ -96,6 +96,7 @@ public class Agastya_5 extends LinearOpMode {
         gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
         gripping.setservo(gripping.servogripper, Constants.gripperOpen);
 
+        //trajectory for moving lifter upwards
         TrajectorySequence up= drive.trajectorySequenceBuilder(new Pose2d())
                 .addTemporalMarker(()->{
                     gripping.setservo(gripping.servogripper,Constants.gripperClosed);
@@ -117,6 +118,7 @@ public class Agastya_5 extends LinearOpMode {
 //                .UNSTABLE_addTemporalMarkerOffset(-0.01,() ->gripping.setservo(gripping.servogripper, Constants.gripperOpen))
 //                .build();
 
+        //trajectory for moving lifter downwards
         TrajectorySequence lowdown= drive.trajectorySequenceBuilder(new Pose2d())
                 .addTemporalMarker(()->{
                     gripping.setservo(gripping.servogripper,Constants.gripperClosed);
@@ -136,6 +138,7 @@ public class Agastya_5 extends LinearOpMode {
                 .build();
 
 
+        //trajectory for moving lifter down from low position
         TrajectorySequence lowdownFromLow= drive.trajectorySequenceBuilder(new Pose2d())
                 .addTemporalMarker(()->{
                     moveLifter(middle);
@@ -155,6 +158,7 @@ public class Agastya_5 extends LinearOpMode {
                 })
                 .build();
 
+        //trajectory for dropping cone
         TrajectorySequence coneDrop= drive.trajectorySequenceBuilder(new Pose2d())
                 .addTemporalMarker(()->{
                     moveLifter(pos);
@@ -164,6 +168,7 @@ public class Agastya_5 extends LinearOpMode {
                 })
                 .build();
 
+        //trajectory for picking up cone
         TrajectorySequence conePickup= drive.trajectorySequenceBuilder(new Pose2d())
                 .addTemporalMarker(()->{
                     gripping.setservo(gripping.servogripper,Constants.gripperClosed);
@@ -175,6 +180,7 @@ public class Agastya_5 extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
+        //moving pods up
         podsHolder.setPosition(Constants.podsUp);
 
         waitForStart();
@@ -213,15 +219,22 @@ public class Agastya_5 extends LinearOpMode {
                 turn = 0.4;
             }
 
-            if (gamepad1.right_bumper) {
+            //for moving lifter to high position
+            if (gamepad1.right_bumper)
+            {
                 pos=high;
                 drive.followTrajectorySequenceAsync(up);
 
-            } else if (gamepad1.right_trigger > 0.8) {
+            }
+            // for moving lifter to middle position
+            else if (gamepad1.right_trigger > 0.8)
+            {
                 pos = middle;
                 drive.followTrajectorySequenceAsync(up);
 
-            } else if (gamepad1.left_trigger > 0.8 && willIncreaseSpeed == false) {
+            }
+            //for moving lifter to low position
+            else if (gamepad1.left_trigger > 0.8 && willIncreaseSpeed == false) {
                 pos=low;
                 drive.followTrajectorySequenceAsync(up);
             }
@@ -237,7 +250,8 @@ public class Agastya_5 extends LinearOpMode {
                 drive.followTrajectorySequenceAsync(lowdownFromLow);
             }
 
-            if(gamepad1.y){
+            if(gamepad1.y)
+            {
                 pos += 30;
                 moveLifter(pos);
             }

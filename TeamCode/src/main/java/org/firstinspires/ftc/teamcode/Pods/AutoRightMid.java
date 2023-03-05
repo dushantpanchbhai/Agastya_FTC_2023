@@ -71,7 +71,7 @@ public class AutoRightMid extends LinearOpMode {
 
     //below distance sensor parameters
     Rev2mDistanceSensor distanceSensorLeft,distanceSensorRight;
-    public static double FrontAlign_target = 4.5 + 1;//2.5; // this is when cone is their
+    public static double FrontAlign_target = 5.5;//4.5 + 1 ;//2.5; // this is when cone is their
     public static double FrontAlign_target_Pole = FrontAlign_target + 1.5;
     public static double FrontAlign_DISTANCE_THRESHOLD = 1;//0.75;
     public static double FrontAlign_factor = 1;
