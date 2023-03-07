@@ -4,13 +4,13 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public class Constants {
     //slider drop for normal drop
-    public static double sliderDrop = 0.84;//0.819;//0.779;//0.58;
-    public static double sliderPickUp = 0.189;//0.139;//0.2688;//0.2088;
+    public static double sliderDrop = 0.82;//0.819;//0.779;//0.58;
+    public static double sliderPickUp = 0.197;//0.139;//0.2688;//0.2088;
     // slider incline drop for drop at some incline angle.
     public static double sliderDropIncline = 0.758;//0.748;
 
-    public static double rotatorPickUP = 0.81;//0.82;//1;//0.86;//1;
-    public static double rotatorDrop = 0.1;//0.1394;//0;//0.1094;//0;
+    public static double rotatorPickUP = 0.83;//0.82;//1;//0.86;//1;
+    public static double rotatorDrop = 0.099;//0.1394;//0;//0.1094;//0;
 
     public static int lowHeight = 680;
     public static int middleHeight = 1180;

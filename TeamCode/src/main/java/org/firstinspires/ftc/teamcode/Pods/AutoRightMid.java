@@ -71,15 +71,15 @@ public class AutoRightMid extends LinearOpMode {
 
     //below distance sensor parameters
     Rev2mDistanceSensor distanceSensorLeft,distanceSensorRight;
-    public static double FrontAlign_target = 5.5;//4.5 + 1 ;//2.5; // this is when cone is their
-    public static double FrontAlign_target_Pole = FrontAlign_target + 1.5;
+    public static double FrontAlign_target = 4.75 + 1.75 - 0.25 -2;//5.5;//4.5 + 1 ;//2.5; // this is when cone is their
+    public static double FrontAlign_target_Pole = FrontAlign_target + 1;
     public static double FrontAlign_DISTANCE_THRESHOLD = 1;//0.75;
     public static double FrontAlign_factor = 1;
 
     // below distance sensor parameters for wall
     Rev2mDistanceSensor distanceSensorBack;
     public static double BackAlign_target = 1;
-    public static double BackAlign_DISTANCE_THRESHOLD = 1;//0.5;
+    public static double BackAlign_DISTANCE_THRESHOLD = 0.8;//0.5;
     public static double BackAlign_factor = 1;
 
     //pole alligning parameters
@@ -106,7 +106,7 @@ public class AutoRightMid extends LinearOpMode {
     public static double sliderDrop = 0.742;//Constants.sliderDrop;
     double sliderPickUp = Constants.sliderPickUp;
 
-    Pose2d startPose = new Pose2d(41, -63, Math.toRadians(180));
+    Pose2d startPose = new Pose2d(41-1, -63, Math.toRadians(180));
 
 
     Pose2d dropPose1 = new Pose2d(24+3+1,-(24-3+1),Math.toRadians(-135));
@@ -177,8 +177,8 @@ public class AutoRightMid extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         TrajectoryVelocityConstraint fastConstraint = new MinVelocityConstraint(Arrays.asList(
-                new TranslationalVelocityConstraint(60),
-                new AngularVelocityConstraint(50)
+                new TranslationalVelocityConstraint(45),
+                new AngularVelocityConstraint(35)
         ));
 
         TrajectorySequence PreloadDrop = drive.trajectorySequenceBuilder(startPose)
@@ -565,13 +565,10 @@ public class AutoRightMid extends LinearOpMode {
         }
 
 
-        telemetry.addData("time",timer.seconds());
-
         waitForStart();
         timer.reset();
         timer.startTime();
 
-        telemetry.addData("time",timer.seconds());
 //######################## STARTS FROM HERE ################################
         drive.followTrajectorySequence(PreloadDrop);
 //
@@ -691,7 +688,7 @@ public class AutoRightMid extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                     gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                .UNSTABLE_addTemporalMarkerOffset(1,()->{
                     gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                 })
                 // ---- motion----
@@ -728,9 +725,6 @@ public class AutoRightMid extends LinearOpMode {
                 })
                 .UNSTABLE_addTemporalMarkerOffset(0.75,()->{
                     gripping.setservo(gripping.servorotate,Constants.rotatorDrop);
-                })
-                .UNSTABLE_addTemporalMarkerOffset(1,()->{
-                    gripping.setservo(gripping.servoslide, Constants.sliderDrop);
                 })
                 //---- motion -------
                 .resetConstraints()
@@ -775,7 +769,7 @@ public class AutoRightMid extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                     gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                .UNSTABLE_addTemporalMarkerOffset(1,()->{
                     gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                 })
                 // ---- motion----
@@ -813,9 +807,6 @@ public class AutoRightMid extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.75,()->{
                     gripping.setservo(gripping.servorotate,Constants.rotatorDrop);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1,()->{
-                    gripping.setservo(gripping.servoslide, Constants.sliderDrop);
-                })
                 //---- motion -------
                 .resetConstraints()
                 .setReversed(false)
@@ -830,7 +821,6 @@ public class AutoRightMid extends LinearOpMode {
         elapsedSeconds = timer.seconds();
         poleAlign(drive);
 
-        telemetry.addData("time",timer.seconds());
 
         elapsedSeconds = timer.seconds();
         distanceAlign(drive,FrontAlign_target);
@@ -842,7 +832,7 @@ public class AutoRightMid extends LinearOpMode {
         dropPose4 = drive.getPoseEstimate();
 
 //        URGENT PARKING 1:
-        if(timer.seconds() >= 25)
+        if(timer.seconds() >= 27)
         {
             if(ParkingZone == "1")
             {
@@ -863,7 +853,7 @@ public class AutoRightMid extends LinearOpMode {
                         .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                             gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                         })
-                        .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                        .UNSTABLE_addTemporalMarkerOffset(1,()->{
                             gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                         })
                         // ---- motion----
@@ -893,7 +883,7 @@ public class AutoRightMid extends LinearOpMode {
                         .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                             gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                         })
-                        .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                        .UNSTABLE_addTemporalMarkerOffset(1,()->{
                             gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                         })
                         // ---- motion----
@@ -921,7 +911,7 @@ public class AutoRightMid extends LinearOpMode {
                         .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                             gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                         })
-                        .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                        .UNSTABLE_addTemporalMarkerOffset(1,()->{
                             gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                         })
                         // ---- motion----
@@ -1048,29 +1038,19 @@ public class AutoRightMid extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.75,()->{
                     gripping.setservo(gripping.servorotate,Constants.rotatorDrop);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1,()->{
-                    gripping.setservo(gripping.servoslide, Constants.sliderDrop);
-                })
                 //---- motion -------
                 .resetConstraints()
                 .setReversed(false)
                 .lineTo(new Vector2d(24+24,-11.5))
                 .splineToSplineHeading(dropPose4,Math.toRadians(-135))
                 .build();
-        drive.followTrajectorySequence(Cone4PickUp);
-
-//        elapsedSeconds = timer.seconds();
-//        distanceAlign(drive);
+//        drive.followTrajectorySequence(Cone4PickUp);
 
         elapsedSeconds = timer.seconds();
         poleAlign(drive);
 
-        telemetry.addData("time",elapsedSeconds);
-
         elapsedSeconds = timer.seconds();
         distanceAlign(drive,FrontAlign_target);
-
-        telemetry.addData("time",elapsedSeconds);
 
         drive.update();
         drive.updatePoseEstimate();
@@ -1094,7 +1074,7 @@ public class AutoRightMid extends LinearOpMode {
                     .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                         gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                     })
-                    .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                    .UNSTABLE_addTemporalMarkerOffset(1,()->{
                         gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                     })
                     // ---- motion----
@@ -1122,7 +1102,7 @@ public class AutoRightMid extends LinearOpMode {
                     .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                         gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                     })
-                    .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                    .UNSTABLE_addTemporalMarkerOffset(1,()->{
                         gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                     })
                     // ---- motion----
@@ -1150,7 +1130,7 @@ public class AutoRightMid extends LinearOpMode {
                     .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
                         gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
                     })
-                    .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                    .UNSTABLE_addTemporalMarkerOffset(1,()->{
                         gripping.setservo(gripping.servogripper, Constants.gripperOpen);
                     })
                     // ---- motion----
@@ -1160,7 +1140,7 @@ public class AutoRightMid extends LinearOpMode {
                     .build();
         }
 
-        drive.followTrajectorySequence(Cone4Drop);
+//        drive.followTrajectorySequence(Cone4Drop);
 
         telemetry.update();
     }

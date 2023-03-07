@@ -72,7 +72,7 @@ public class AutoLeftMid extends LinearOpMode {
     //below distance sensor parameters
     Rev2mDistanceSensor distanceSensorLeft,distanceSensorRight;
     public static double FrontAlign_target = 4.75 + 1.75 - 0.25 -2;// - 0.8;//2.5; //change this for front distance
-    public static double FrontAlign_target_Pole = FrontAlign_target + 1.5;
+    public static double FrontAlign_target_Pole = FrontAlign_target + 1;//1.5;
     double FrontAlign_DISTANCE_THRESHOLD = 1;//0.75;
     double FrontAlign_factor = 1;
 
@@ -106,7 +106,7 @@ public class AutoLeftMid extends LinearOpMode {
     public static double sliderDrop = 0.742;//Constants.sliderDrop;
     double sliderPickUp = Constants.sliderPickUp;
 
-    Pose2d startPose = new Pose2d(41, 63, Math.toRadians(180));
+    Pose2d startPose = new Pose2d(41-1, 63, Math.toRadians(180));
 
 
     Pose2d dropPose1 = new Pose2d(24+3+0.1,24-3+0.1,Math.toRadians(135));
@@ -182,7 +182,7 @@ public class AutoLeftMid extends LinearOpMode {
         ));
 
         TrajectoryVelocityConstraint slowConstraint = new MinVelocityConstraint(Arrays.asList(
-                new TranslationalVelocityConstraint(50),
+                new TranslationalVelocityConstraint(45),
                 new AngularVelocityConstraint(30)
         ));
 
@@ -983,7 +983,8 @@ public class AutoLeftMid extends LinearOpMode {
 //                .splineToSplineHeading(new Pose2d(24+3+1 -0.3-0.3,-(24-3+1)-0.3-0.3,Math.toRadians(-135)),Math.toRadians(-135))
                 .splineToSplineHeading(dropPose4,Math.toRadians(135))
                 .build();
-        drive.followTrajectorySequence(Cone4PickUp);
+
+//        drive.followTrajectorySequence(Cone4PickUp);
 
         elapsedSeconds = timer.seconds();
         poleAlign(drive);
@@ -1089,7 +1090,7 @@ public class AutoLeftMid extends LinearOpMode {
                     .build();
         }
 
-        drive.followTrajectorySequence(Cone4Drop);
+//        drive.followTrajectorySequence(Cone4Drop);
 
         telemetry.update();
     }
