@@ -413,13 +413,18 @@ public class Agastya_5 extends LinearOpMode {
                 colorSensorUsed = false;
             }
 
-            if(colorSensorUsed==true && (colorSensorGripper.blue() > 240 || colorSensorGripper.red()>165))
+//            if(colorSensorUsed==true && (colorSensorGripper.blue() > 240 || colorSensorGripper.red()>165))
+//            {
+//                pos += 200;
+//
+//                drive.followTrajectorySequenceAsync(conePickup);
+//            }
+
+            if(colorSensorUsed==true && colorSensorGripper.getDistance(DistanceUnit.INCH) < 3.5)
             {
                 pos += 200;
-
                 drive.followTrajectorySequenceAsync(conePickup);
             }
-
 
             telemetry.addData("pos = ",pos);
             telemetry.addData("servo slide",gripping.servoslide.getPosition());
