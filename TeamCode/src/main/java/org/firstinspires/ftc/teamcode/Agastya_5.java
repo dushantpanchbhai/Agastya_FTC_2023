@@ -85,6 +85,10 @@ public class Agastya_5 extends LinearOpMode {
         liftleft = hardwareMap.get(DcMotorEx.class, "liftleft");
         liftright = hardwareMap.get(DcMotorEx.class, "liftright");
 
+        //reversing lift left
+        liftleft.setDirection(DcMotorSimple.Direction.REVERSE);
+        //
+
         liftleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftright.setDirection(DcMotorSimple.Direction.REVERSE);

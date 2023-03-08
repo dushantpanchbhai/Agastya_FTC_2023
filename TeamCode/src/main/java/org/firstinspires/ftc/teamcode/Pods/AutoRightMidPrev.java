@@ -33,7 +33,7 @@ import java.util.Arrays;
 
 @Config
 @Autonomous
-public class AutoRightMid extends LinearOpMode {
+public class AutoRightMidPrev extends LinearOpMode {
     DcMotorEx liftleft,liftright;
     double uppower = 0.9;
 
@@ -834,7 +834,230 @@ public class AutoRightMid extends LinearOpMode {
         drive.updatePoseEstimate();
         dropPose4 = drive.getPoseEstimate();
 
-        //final parking after dropping 3rd cone
+//        URGENT PARKING 1:
+        if(timer.seconds() >= 27)
+        {
+            if(ParkingZone == "1")
+            {
+                Cone4Drop = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .addTemporalMarker(()->{
+                            lifterUp(middle - 400);
+                            gripping.setservo(gripping.servogripper,Constants.gripperOpen);
+                        }).waitSeconds(.2)
+//                //PRELOAD DROP COMPLETED
+//                //STARTING CONE SEQUENCE
+                        .UNSTABLE_addTemporalMarkerOffset(0.2,()->{
+                            gripping.setservo(gripping.servorotate,Constants.rotatorPickUP);
+                            gripping.setservo(gripping.servogripper,Constants.gripperClosed);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.74,()->{
+                            lifterUp(0);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
+                            gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(1,()->{
+                            gripping.setservo(gripping.servogripper, Constants.gripperOpen);
+                        })
+                        // ---- motion----
+                        .setVelConstraint(fastConstraint)
+                        .setReversed(true)
+                        .splineToSplineHeading(new Pose2d(12, -11.5, Math.toRadians(0)), Math.toRadians(180))
+                        .build();
+
+
+            }
+            else if(ParkingZone == "3")
+            {
+                Cone4Drop = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .addTemporalMarker(()->{
+                            lifterUp(middle - 400);
+                            gripping.setservo(gripping.servogripper,Constants.gripperOpen);
+                        }).waitSeconds(.2)
+//                //PRELOAD DROP COMPLETED
+//                //STARTING CONE SEQUENCE
+                        .UNSTABLE_addTemporalMarkerOffset(0.2,()->{
+                            gripping.setservo(gripping.servorotate,Constants.rotatorPickUP);
+                            gripping.setservo(gripping.servogripper,Constants.gripperClosed);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.74,()->{
+                            lifterUp(0);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
+                            gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(1,()->{
+                            gripping.setservo(gripping.servogripper, Constants.gripperOpen);
+                        })
+                        // ---- motion----
+                        .setVelConstraint(fastConstraint)
+                        .setReversed(true)
+                        .splineToSplineHeading(new Pose2d(24+24+12, -11.5, Math.toRadians(180)), Math.toRadians(0))
+                        .build();
+            }
+            else
+            {
+                Cone4Drop = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .addTemporalMarker(()->{
+                            lifterUp(middle - 200);
+                            gripping.setservo(gripping.servogripper,Constants.gripperOpen);
+                        }).waitSeconds(.2)
+//                //PRELOAD DROP COMPLETED
+//                //STARTING CONE SEQUENCE
+                        .UNSTABLE_addTemporalMarkerOffset(0,()->{
+                            gripping.setservo(gripping.servorotate,Constants.rotatorPickUP);
+                            gripping.setservo(gripping.servogripper,Constants.gripperClosed);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.74,()->{
+                            lifterUp(0);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
+                            gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(1,()->{
+                            gripping.setservo(gripping.servogripper, Constants.gripperOpen);
+                        })
+                        // ---- motion----
+                        .setVelConstraint(fastConstraint)
+                        .setReversed(true)
+                        .splineToSplineHeading(new Pose2d(24+12, -11.5, Math.toRadians(-90)), Math.toRadians(90))
+                        .build();
+            }
+            drive.followTrajectorySequence(Cone4Drop);
+            stop();
+        }
+
+//
+        Cone3Drop = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .addTemporalMarker(()->{
+                    gripping.setservo(gripping.servogripper,Constants.gripperOpen);
+                    lifterUp(middle - 400);
+                }).waitSeconds(DropDelay)
+//                //PRELOAD DROP COMPLETED
+//                //STARTING CONE SEQUENCE
+                .UNSTABLE_addTemporalMarkerOffset(0.3,()->{
+                    gripping.setservo(gripping.servorotate,Constants.rotatorPickUP);
+                    gripping.setservo(gripping.servogripper,Constants.gripperClosed);
+                })
+                .UNSTABLE_addTemporalMarkerOffset(0.74,()->{
+                    lifterUp(cone4);
+                })
+                .UNSTABLE_addTemporalMarkerOffset(0.8,()->{
+                    gripping.setservo(gripping.servoslide, Constants.sliderPickUp);
+                })
+                .UNSTABLE_addTemporalMarkerOffset(1.2,()->{
+                    gripping.setservo(gripping.servogripper, Constants.gripperOpen);
+                })
+                // ---- motion----
+                .setVelConstraint(fastConstraint)
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(24+24, pickUpCorrdinateY2, Math.toRadians(180)), Math.toRadians(0))
+                .lineTo(new Vector2d(pickUpCoordinateX1,pickUpCorrdinateY2))
+                .build();
+        drive.followTrajectorySequence(Cone3Drop);
+
+        //Urgent Parking 2
+        if(timer.seconds() >= endTime)
+        {
+            if(ParkingZone == "1")
+            {
+                TrajectorySequence Parking = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .addTemporalMarker(()->{
+                            gripping.setservo(gripping.servogripper,gripperClosed);
+                        }).waitSeconds(0.1)
+                        .addTemporalMarker(()->{
+                            lifterUp(cone1 + 200);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.3,()->{
+                            lifterUp(0);
+                        })
+                        .lineTo(new Vector2d(12,-11.5))
+                        .build();
+                drive.followTrajectorySequence(Parking);
+                stop();
+            }
+            else if(ParkingZone == "3")
+            {
+                TrajectorySequence Parking = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .addTemporalMarker(()->{
+                            gripping.setservo(gripping.servogripper,gripperClosed);
+                        }).waitSeconds(0.1)
+                        .addTemporalMarker(()->{
+                            lifterUp(cone1 + 200);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.3,()->{
+                            lifterUp(0);
+                        })
+                        .lineTo(new Vector2d(24+24+8,-11.5))
+                        .build();
+                drive.followTrajectorySequence(Parking);
+                stop();
+            }
+            else
+            {
+                TrajectorySequence Parking = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .addTemporalMarker(()->{
+                            gripping.setservo(gripping.servogripper,gripperClosed);
+                        }).waitSeconds(0.1)
+                        .addTemporalMarker(()->{
+                            lifterUp(cone1 + 200);
+                        })
+                        .UNSTABLE_addTemporalMarkerOffset(0.3,()->{
+                            lifterUp(0);
+                        })
+                        .lineTo(new Vector2d(24+12,-11.5))
+                        .build();
+                drive.followTrajectorySequence(Parking);
+                stop();
+            }
+        }
+//
+        elapsedSeconds = timer.seconds();
+        distanceAlignBack(drive);
+
+        telemetry.addData("time",timer.seconds());
+
+        drive.update();
+        drive.updatePoseEstimate();
+        pickUpCoordinateX1 = drive.getPoseEstimate().getX();
+        pickUpCoordinateY1 = drive.getPoseEstimate().getY();
+
+
+//
+        Cone4PickUp = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .addTemporalMarker(()->{
+                    gripping.setservo(gripping.servogripper,gripperClosed);
+                }).waitSeconds(0.25)
+                .addTemporalMarker(()->{
+                    lifterUp(cone4+400);
+                }).waitSeconds(0.1)
+                //
+                .UNSTABLE_addTemporalMarkerOffset(0.1,()->{
+                    gripping.setservo(gripping.servogripper,Constants.gripperClosed);
+                    gripping.setservo(gripping.servoslide, Constants.sliderDrop);
+                    lifterUp(middle);
+                    gripping.setservo(gripping.servoBalancer,Constants.balancerOut);
+                })
+                .UNSTABLE_addTemporalMarkerOffset(0.75,()->{
+                    gripping.setservo(gripping.servorotate,Constants.rotatorDrop);
+                })
+                //---- motion -------
+                .resetConstraints()
+                .setReversed(false)
+                .lineTo(new Vector2d(24+24,-11.5))
+                .splineToSplineHeading(dropPose4,Math.toRadians(-135))
+                .build();
+//        drive.followTrajectorySequence(Cone4PickUp);
+
+        elapsedSeconds = timer.seconds();
+        poleAlign(drive);
+
+        elapsedSeconds = timer.seconds();
+        distanceAlign(drive,FrontAlign_target);
+
+        drive.update();
+        drive.updatePoseEstimate();
+
         if(ParkingZone == "1")
         {
             Cone4Drop = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -862,8 +1085,6 @@ public class AutoRightMid extends LinearOpMode {
                     .setReversed(true)
                     .splineToSplineHeading(new Pose2d(12, -11.5, Math.toRadians(0)), Math.toRadians(180))
                     .build();
-
-
         }
         else if(ParkingZone == "3")
         {
@@ -922,7 +1143,7 @@ public class AutoRightMid extends LinearOpMode {
                     .build();
         }
 
-        drive.followTrajectorySequence(Cone4Drop);
+//        drive.followTrajectorySequence(Cone4Drop);
 
         telemetry.update();
     }
